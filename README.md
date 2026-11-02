@@ -21,9 +21,12 @@ not the upstream archive or a repackaged game.
 ```sh
 ./scripts/prepare-amiga-port.sh \
   "/path/to/Another Sonic 2 Remake" \
-  /path/to/amigaopensurge/dist/opensurge \
   ./dist/AS2R
 ```
+
+Install the QPAK-enabled shared engine at `DH1:OpenSurgeRC1`, then run the
+prepared port with `Execute DH1:AS2R/StartGame`. This uses OpenSurge's `--game`
+compatibility path rather than copying or forking the engine.
 
 See [PORT_STATUS.md](PORT_STATUS.md) for validation results.
 
