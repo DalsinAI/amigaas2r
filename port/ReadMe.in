@@ -1,0 +1,92 @@
+AS2R: Another Sonic 2 Remake for AmigaOS 3 - @RELEASE_VERSION@
+===========================================================
+
+The Amiga OpenSurge engine, ready to play AS2R: Another Sonic 2 Remake,
+a fan game made with the Open Surge Engine. No separate engine install is
+needed.
+
+THIS ARCHIVE HAS NONE OF THE GAME'S OWN FILES. Its makers have not said
+they may be passed on, so they are not. Download the game yourself, from
+its page:
+
+
+  https://sonicfangameshq.com/forums/showcase/as2r-another-sonic-2-remake-sage-22-demo.1389/
+
+  file     Another Sonic 2 Remake Android Compatible.zip
+  size     121434129 bytes
+  sha256   dd79b04d12164ff5572a0abed1f38930e3d102d498d9113f82aed00a3a9eece2
+
+The game, its characters and its music belong to their makers and owners;
+it is not made by or for SEGA.
+
+Installing
+----------
+Double-click Install-AS2R beside the AS2R drawer. It checks the CPU,
+FPU and GFOpenGPU, asks where the AS2R drawer should go (Work:Games is
+offered), copies the engine there, and then asks for the game you
+downloaded:
+
+- the archive itself: the Installer checks its size and unpacks it with
+  SYS:Utilities/GFOpenCompress (part of AmiCradle) into the drawer;
+- or the folder "Another Sonic 2 Remake" that unpacking it made;
+- or a game.zip made from the download on another computer with the port's
+  scripts/prepare-amiga-port.sh.
+
+It checks the folder's name and the sizes of a few of its files, then
+copies the game's files into AS2R/Game, leaving out the Windows program
+files. It then updates the menu script for OpenSurge 0.6.1 with
+Tools/PatchMenu.rexx (ARexx; RexxMast is started if it is not running) and
+adds Tools/surge.cfg. Running Install-AS2R again replaces or keeps those
+files.
+
+A computer with a shell can check the download's SHA-256 first:
+  sha256sum "Another Sonic 2 Remake Android Compatible.zip"
+
+What is in the drawer
+---------------------
+StartGame   starts the game (once its files are installed)
+Engine/     the OpenSurge engine (below)
+Game/       the game's own files, from your download (Install-AS2R)
+Tools/      what Install-AS2R uses
+Licences/   licences and the engine's source
+
+What it needs
+-------------
+- AmigaOS 3.2 (Installer 43.3 or newer for Install-AS2R)
+- a 68040 or 68060 with an FPU
+- GFOpenGPU: LIBS:GFOpenGPU/GL.module and SDL2.module (as on AmiCradle)
+- about 480 MB free on the hard disk, and plenty of Fast RAM
+
+The engine
+----------
+Engine/ is Amiga OpenSurge, Open Surge Engine 0.6.1.3 for AmigaOS 3,
+exactly as released:
+
+  release   @ENGINE_REPO@ @ENGINE_TAG@
+  commit    @ENGINE_COMMIT@
+  archive   @ENGINE_ASSET@
+  sha256    @ENGINE_SHA256@
+  program   Engine/opensurge
+  sha256    @ENGINE_BINARY_SHA256@
+  compiler  @ENGINE_COMPILER@
+
+No separate engine install is needed: StartGame runs this copy. The engine
+keeps its settings, logfile.txt and the game's compatibility pack in
+Engine/ (Engine/.userdata). Licences/SOURCE.txt says where its source is.
+
+Starting and playing
+--------------------
+Double-click StartGame in the AS2R drawer. From a Shell, CD to the
+drawer first, then Execute StartGame. F10 switches between a window and
+the full screen. Leave the game from its own menu (Esc brings it up in
+most games).
+
+Licences
+--------
+Licences/GPL-3.0.txt   the engine (GNU GPL 3 or later)
+Licences/SOURCE.txt    where the engine's source is, at the exact commit
+Licences/Port-scripts-MIT.txt  StartGame, the Installer script, Tools/
+Engine/licenses/       the engine's own art, sound and font licences
+
+The port's repository: https://github.com/DalsinAI/amigaas2r
+(port commit @PORT_COMMIT@)
