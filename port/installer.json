@@ -1,6 +1,6 @@
 {
   "name": "AS2R: Another Sonic 2 Remake",
-  "version": "standalone-rc1",
+  "version": "standalone-rc2",
   "drawer": "AS2R",
   "program": "StartGame",
   "cpu": "68040",

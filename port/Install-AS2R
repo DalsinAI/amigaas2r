@@ -1,10 +1,10 @@
-; $VER: Install-AS2R standalone-rc1 (5.11.2026)
+; $VER: Install-AS2R standalone-rc2 (6.11.2026)
 ; The Amiga Installer script for AS2R: Another Sonic 2 Remake, an AmiCradle game port.
 ; Made by amicradle scripts/port_installer.py: change the spec, not this file.
 ; Run it from its icon, beside the AS2R drawer where the archive was unpacked.
 
 (set @app-name "AS2R: Another Sonic 2 Remake")
-(set #version "standalone-rc1")
+(set #version "standalone-rc2")
 (set #drawer "AS2R")
 (set #program "StartGame")
 (set #space 468750)  ; KB
@@ -30,7 +30,7 @@
 (if (<> (exists (tackon #from #program) (noreq)) 1)
     (abort "The AS2R drawer has no StartGame in it. Unpack the whole archive again."))
 
-(welcome "This installs AS2R: Another Sonic 2 Remake standalone-rc1 for AmigaOS 3.2 on a 68040, 68060 or 68080 with an FPU.")
+(welcome "This installs AS2R: Another Sonic 2 Remake standalone-rc2 for AmigaOS 3.2 on a 68040, 68060 or 68080 with an FPU.")
 
 ; where: the parent drawer
 (set #default
@@ -112,7 +112,11 @@
 (set #game (tackon #dest "Game"))
 (set #gamezip (tackon #dest "game.zip"))
 (set #have (or (= (exists (tackon #game "languages") (noreq)) 2) (= (exists #gamezip (noreq)) 1)))
-(message "AS2R: Another Sonic 2 Remake's own files are not part of this archive and are not given out with it. Download the game yourself from its page:\n\nhttps://sonicfangameshq.com/forums/showcase/as2r-another-sonic-2-remake-sage-22-demo.1389/\n\nThe file there is called Another Sonic 2 Remake Android Compatible.zip (121434129 bytes; SHA-256 dd79b04d12164ff5572a0abed1f38930e3d102d498d9113f82aed00a3a9eece2).")
+(set #sha256 "dd79b04d12164ff5572a0abed1f38930e3d102d498d9113f82aed00a3a9eece2")
+; Tools/SHA256 (port/sha256 in the port's repository) checks the download's SHA-256
+(set #checker (tackon #from "Tools/SHA256"))
+(set #can-check (= (exists #checker (noreq)) 1))
+(message "AS2R: Another Sonic 2 Remake's own files are not part of this archive and are not given out with it. Download the game yourself from its page:\n\nhttps://sonicfangameshq.com/forums/showcase/as2r-another-sonic-2-remake-sage-22-demo.1389/\n\nThe file there is called Another Sonic 2 Remake Android Compatible.zip (121434129 bytes; SHA-256 dd79b04d12164ff5572a0abed1f38930e3d102d498d9113f82aed00a3a9eece2).\n\nThe Installer checks its size, and can check its SHA-256 too.")
 (set #how
     (askchoice
         (prompt "Where are AS2R: Another Sonic 2 Remake's own files, from Another Sonic 2 Remake Android Compatible.zip?")
@@ -133,6 +137,22 @@
             (abort (cat "There is no file " #arc ".")))
         (if (<> (getsize #arc) #archive-size)
             (abort (cat #arc " is " (getsize #arc) " bytes, not the 121434129 of Another Sonic 2 Remake Android Compatible.zip. Download it again from https://sonicfangameshq.com/forums/showcase/as2r-another-sonic-2-remake-sage-22-demo.1389/")))
+        (if #can-check
+            (if
+                (askbool
+                    (prompt "Check the SHA-256 of Another Sonic 2 Remake Android Compatible.zip before it is unpacked?")
+                    (help "Its size is right. Tools/SHA256 (in this archive) reads the whole file and compares its SHA-256 with dd79b04d12164ff5572a0abed1f38930e3d102d498d9113f82aed00a3a9eece2, the one of the download this port was made for. That finds a damaged download or another version of the game. On a 68040 it takes a few minutes. Skip it if you checked the file on another computer.")
+                    (choices "Check it" "Skip the check")
+                    (default 1))
+                (
+                    (working "Checking the SHA-256 of Another Sonic 2 Remake Android Compatible.zip. On a 68040 this takes a few minutes.")
+                    (set #sha-rc (run (cat "\"" #checker "\" \"" #arc "\" EXPECT=" #sha256 " >NIL:") (safe)))
+                    (if (<> #sha-rc 0)
+                        (abort (cat #arc " is not the Another Sonic 2 Remake Android Compatible.zip this port was made for: its SHA-256 is not " #sha256 ". It was damaged in the download or is another version. Download it again from https://sonicfangameshq.com/forums/showcase/as2r-another-sonic-2-remake-sage-22-demo.1389/")))
+                    (message (cat "The SHA-256 of " #arc " matches:" "\n\n" #sha256))
+                )
+            )
+        )
         (if (<> (exists "SYS:Utilities/GFOpenCompress" (noreq)) 1)
             (abort "SYS:Utilities/GFOpenCompress, which unpacks the archive, is not on this Amiga. Unpack Another Sonic 2 Remake Android Compatible.zip with an unzip tool, then run Install-AS2R again and choose the Another Sonic 2 Remake folder."))
         (set #unpack (tackon #dest "Unpack"))
@@ -155,6 +175,31 @@
             (set #src (tackon #src #root)))
         (if (<> (fileonly #src) #root)
             (abort (cat #src " is not the Another Sonic 2 Remake folder. Choose the folder that unpacking Another Sonic 2 Remake Android Compatible.zip made.")))
+        (if #can-check
+            (if
+                (askbool
+                    (prompt "The folder's files are checked by their sizes, which finds a folder that is incomplete or from another version. Do you still have Another Sonic 2 Remake Android Compatible.zip? If you do, the Installer can check its SHA-256 as well.")
+                    (help "Tools/SHA256 (in this archive) reads Another Sonic 2 Remake Android Compatible.zip and compares its SHA-256 with dd79b04d12164ff5572a0abed1f38930e3d102d498d9113f82aed00a3a9eece2, the one of the download this port was made for. If you no longer have the archive, choose Sizes only: the folder is then checked by the sizes of a few of its files, not by a SHA-256.")
+                    (choices "Check the archive" "Sizes only")
+                    (default 1))
+                (
+                    (set #arc
+                        (askfile
+                            (prompt "Choose Another Sonic 2 Remake Android Compatible.zip, as you downloaded it.")
+                            (help @askfile-help)
+                            (default "RAM:")))
+                    (if (<> (exists #arc (noreq)) 1)
+                        (abort (cat "There is no file " #arc ".")))
+                    (if (<> (getsize #arc) #archive-size)
+                        (abort (cat #arc " is " (getsize #arc) " bytes, not the 121434129 of Another Sonic 2 Remake Android Compatible.zip. Download it again from https://sonicfangameshq.com/forums/showcase/as2r-another-sonic-2-remake-sage-22-demo.1389/")))
+                    (working "Checking the SHA-256 of Another Sonic 2 Remake Android Compatible.zip. On a 68040 this takes a few minutes.")
+                    (set #sha-rc (run (cat "\"" #checker "\" \"" #arc "\" EXPECT=" #sha256 " >NIL:") (safe)))
+                    (if (<> #sha-rc 0)
+                        (abort (cat #arc " is not the Another Sonic 2 Remake Android Compatible.zip this port was made for: its SHA-256 is not " #sha256 ". It was damaged in the download or is another version. Download it again from https://sonicfangameshq.com/forums/showcase/as2r-another-sonic-2-remake-sage-22-demo.1389/")))
+                    (message (cat "The SHA-256 of " #arc " matches:" "\n\n" #sha256))
+                )
+            )
+        )
     )
 )
 (if (<> #src "")
@@ -229,7 +274,7 @@
 (complete 100)
 (if @pretend
     (message (cat "Pretend: nothing was copied or changed. AS2R: Another Sonic 2 Remake would have gone in " #dest "."))
-    (message (cat "AS2R: Another Sonic 2 Remake standalone-rc1 is installed in " #dest "."
+    (message (cat "AS2R: Another Sonic 2 Remake standalone-rc2 is installed in " #dest "."
                   "\n\nTo start it, open the AS2R drawer and double-click the StartGame icon."
                   (if (= #kept "") "" (cat "\n\nLeft as they were: " #kept ".")))))
 (exit (quiet))
