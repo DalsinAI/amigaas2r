@@ -1,0 +1,56 @@
+{
+  "name": "AS2R: Another Sonic 2 Remake",
+  "version": "standalone-rc1",
+  "drawer": "AS2R",
+  "program": "StartGame",
+  "cpu": "68040",
+  "fpu": true,
+  "space": 480000000,
+  "modules": [
+    "GL.module",
+    "SDL2.module"
+  ],
+  "keep": [
+    "Game",
+    "game.zip"
+  ],
+  "parent": "Work:Games",
+  "badge": "icons/art/badge.png",
+  "data": {
+    "root": "Another Sonic 2 Remake",
+    "archive": "Another Sonic 2 Remake Android Compatible.zip",
+    "archive_size": 121434129,
+    "sha256": "dd79b04d12164ff5572a0abed1f38930e3d102d498d9113f82aed00a3a9eece2",
+    "page": "https://sonicfangameshq.com/forums/showcase/as2r-another-sonic-2-remake-sage-22-demo.1389/",
+    "unzip": true,
+    "patch_menu": true,
+    "surge_cfg": true,
+    "exclude": [
+      "#?.exe",
+      "#?.dll",
+      "src",
+      "screenshots",
+      "logfile.txt",
+      "allegro.log",
+      "surge.prefs",
+      "CMakeLists.txt",
+      "CHANGES.md",
+      "CONTRIBUTING.md",
+      "README.md"
+    ],
+    "checks": [
+      [
+        "scripts/ui/menubuttonlist.ss",
+        6940
+      ],
+      [
+        "levels/Ice_Cap_test.lev",
+        24446
+      ],
+      [
+        "musics/parkav.ogg",
+        3435552
+      ]
+    ]
+  }
+}
