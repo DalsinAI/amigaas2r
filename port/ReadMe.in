@@ -39,7 +39,16 @@ Tools/PatchMenu.rexx (ARexx; RexxMast is started if it is not running) and
 adds Tools/surge.cfg. Running Install-AS2R again replaces or keeps those
 files.
 
-A computer with a shell can check the download's SHA-256 first:
+The Installer can check the download's SHA-256 on the Amiga with
+Tools/SHA256, which comes in this archive: given the archive, it asks
+(Check it is the default) before unpacking it; given the unpacked
+folder, it asks whether you still have the archive and checks that.
+It takes a few minutes on a 68040. Without the archive, the folder is
+checked by the sizes of a few of its files only.
+
+The same check from a Shell, in the AS2R drawer:
+  Tools/SHA256 "Another Sonic 2 Remake Android Compatible.zip" EXPECT=<SHA-256 above>
+or on another computer:
   sha256sum "Another Sonic 2 Remake Android Compatible.zip"
 
 What is in the drawer
@@ -47,7 +56,7 @@ What is in the drawer
 StartGame   starts the game (once its files are installed)
 Engine/     the OpenSurge engine (below)
 Game/       the game's own files, from your download (Install-AS2R)
-Tools/      what Install-AS2R uses
+Tools/      what Install-AS2R uses (SHA256 checks the download)
 Licences/   licences and the engine's source
 
 What it needs
@@ -88,6 +97,7 @@ Licences
 Licences/GPL-3.0.txt   the engine (GNU GPL 3 or later)
 Licences/SOURCE.txt    where the engine's source is, at the exact commit
 Licences/Port-scripts-MIT.txt  StartGame, the Installer script, Tools/
+Licences/SHA256.txt    Tools/SHA256 (MIT, AmiCradle Team)
 Engine/licenses/       the engine's own art, sound and font licences
 
 The port's repository: https://github.com/DalsinAI/amigaas2r
